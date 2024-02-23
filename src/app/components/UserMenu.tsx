@@ -1,3 +1,5 @@
+'use client';
+
 import { FC } from 'react';
 import Link from 'next/link';
 import {
@@ -7,9 +9,14 @@ import {
   DropdownItem,
   Avatar,
 } from '@nextui-org/react';
-import { Github, MessageCircleQuestion, Bug } from 'lucide-react';
+import { Github, MessageCircleQuestion, Bug, LogOut } from 'lucide-react';
+import type { User } from 'next-auth';
 
-const UserMenu: FC = () => {
+type IProps = {
+  user?: User;
+};
+
+const UserMenu: FC<IProps> = ({ user }) => {
   return (
     <Dropdown placement="bottom-end">
       <DropdownTrigger>
@@ -17,24 +24,37 @@ const UserMenu: FC = () => {
           isBordered
           as="button"
           className="transition-transform"
-          src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+          src={user?.image || ''}
         />
       </DropdownTrigger>
       <DropdownMenu aria-label="Profile Actions" variant="flat">
-        <DropdownItem key="github">
-          <a className="flex items-center">
-            <Github className="mr-2 h-4 w-4" />
-            <span>Login with GitHub</span>
-          </a>
-        </DropdownItem>
-        <DropdownItem key="faq">
+        {user?.id ? (
+          <DropdownItem key="logout" textValue="Log out">
+            <a href="/api/github/logout" className="flex items-center">
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Log out</span>
+            </a>
+          </DropdownItem>
+        ) : (
+          <DropdownItem key="github" textValue="Login with GitHub">
+            <a href="/api/github" className="flex items-center">
+              <Github className="mr-2 h-4 w-4" />
+              <span>Login with GitHub</span>
+            </a>
+          </DropdownItem>
+        )}
+        <DropdownItem key="faq" textValue="FAQs">
           <Link href="/faq" className="flex items-center">
             <MessageCircleQuestion className="mr-2 h-4 w-4" />
             <span>FAQs</span>
           </Link>
         </DropdownItem>
-        <DropdownItem key="issue">
-          <Link href="/issue" className="flex items-center">
+        <DropdownItem key="issue" textValue="Report an issue">
+          <Link
+            href="https://github.com/Pilotager/taroify0/issues/new"
+            className="flex items-center"
+            target="_blank"
+          >
             <Bug className="mr-2 h-4 w-4" />
             <span>Report an issue</span>
           </Link>
