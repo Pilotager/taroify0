@@ -4,6 +4,7 @@ import PromptInput from './components/PromptInput';
 import GithubLoginDialog from './components/GithubLoginDialog';
 import { useSession } from 'next-auth/react';
 import { useDisclosure } from '@nextui-org/react';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function Home() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -16,6 +17,11 @@ export default function Home() {
       onOpen();
       return;
     }
+
+    if (!localStorage.getItem('openai-key')) {
+      toast('Please Enter OpenAI API Key!');
+      return;
+    }
   };
 
   return (
@@ -26,6 +32,7 @@ export default function Home() {
         </div>
       </div>
       <GithubLoginDialog open={isOpen} onOpenChange={onOpenChange} />
+      <ToastContainer hideProgressBar theme="dark" />
     </div>
   );
 }
