@@ -1,13 +1,15 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import Link from 'next/link';
 import {
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  DropdownSection,
   Avatar,
+  Input,
 } from '@nextui-org/react';
 import { Github, MessageCircleQuestion, Bug, LogOut } from 'lucide-react';
 import type { User } from 'next-auth';
@@ -17,6 +19,13 @@ type IProps = {
 };
 
 const UserMenu: FC<IProps> = ({ user }) => {
+  const [key, setKey] = useState(localStorage.getItem('openai-key') || '');
+
+  const onValueChange = (value: string) => {
+    setKey(value);
+    localStorage.setItem('openai-key', value);
+  };
+
   return (
     <Dropdown placement="bottom-end">
       <DropdownTrigger>
@@ -28,6 +37,21 @@ const UserMenu: FC<IProps> = ({ user }) => {
         />
       </DropdownTrigger>
       <DropdownMenu aria-label="Profile Actions" variant="flat">
+        <DropdownSection title="OpenAI Key *" showDivider>
+          <DropdownItem isReadOnly key="openAi" textValue="openAi">
+            <Input
+              type="text"
+              variant="bordered"
+              label=""
+              size="sm"
+              labelPlacement="outside"
+              placeholder="sk-************ (Required)"
+              className="w-[200px]"
+              onValueChange={onValueChange}
+              value={key}
+            />
+          </DropdownItem>
+        </DropdownSection>
         {user?.id ? (
           <DropdownItem key="logout" textValue="Log out">
             <a href="/api/github/logout" className="flex items-center">
