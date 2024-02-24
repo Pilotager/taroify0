@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "download:repo": "cd src/template && jiti downloadRepo",
+    "parse:repo": "jiti src/template/taroify/parseMeta"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^0.7.0",
@@ -17,10 +19,13 @@
     "drizzle-kit": "^0.20.14",
     "drizzle-orm": "^0.29.3",
     "framer-motion": "^11.0.5",
+    "giget": "^1.2.1",
     "h3": "^1.10.2",
+    "jiti": "^1.21.0",
     "lucide-react": "^0.301.0",
     "next": "14.1.0",
     "next-auth": "^5.0.0-beta.4",
+    "openai": "^4.28.0",
     "react": "^18",
     "react-dom": "^18",
     "react-toastify": "^10.0.4"
@@ -34,6 +39,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
     "eslint-config-prettier": "^9.1.0",
+    "gray-matter": "^4.0.3",
     "pathe": "^1.1.2",
     "postcss": "^8",
     "prettier": "3.2.5",
