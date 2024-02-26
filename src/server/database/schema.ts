@@ -3,6 +3,11 @@ import { drizzle } from 'drizzle-orm/better-sqlite3';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { primaryKey } from 'drizzle-orm/pg-core';
 import { join } from 'pathe';
+import { init } from '@paralleldrive/cuid2';
+
+const createId = init({
+  length: 12,
+});
 
 const betterSqlite = new Database(join(process.cwd(), './db.sqlite'));
 export const db = drizzle(betterSqlite);
@@ -60,3 +65,18 @@ export const verificationTokens = sqliteTable(
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   }),
 );
+
+export const components = sqliteTable('components', {
+  id: text('id')
+    .$defaultFn(() => createId())
+    .primaryKey(),
+  slug: text('slug').$defaultFn(() => createId()),
+  description: text('description').notNull(),
+  code: text('code'),
+  createdAt: integer('created_at', { mode: 'timestamp_ms' }).$default(
+    () => new Date(),
+  ),
+  userId: text('user_id').references(() => users.id),
+  metadata: text('metadata', { mode: 'json' }),
+  completed: integer('completed', { mode: 'boolean' }),
+});

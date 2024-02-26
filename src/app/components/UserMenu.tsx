@@ -19,7 +19,11 @@ type IProps = {
 };
 
 const UserMenu: FC<IProps> = ({ user }) => {
-  const [key, setKey] = useState(localStorage.getItem('openai-key') || '');
+  const [key, setKey] = useState(
+    typeof window !== 'undefined'
+      ? localStorage.getItem('openai-key') || ''
+      : '',
+  );
 
   const onValueChange = (value: string) => {
     setKey(value);

@@ -1,16 +1,22 @@
 'use client';
 
-import PromptInput from './components/PromptInput';
-import GithubLoginDialog from './components/GithubLoginDialog';
 import { useSession } from 'next-auth/react';
 import { useDisclosure } from '@nextui-org/react';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import { useRouter } from 'next/navigation';
+import { usePrompt } from '@/app/utils';
+import PromptInput from './components/PromptInput';
+import GithubLoginDialog from './components/GithubLoginDialog';
 
 export default function Home() {
+  const router = useRouter();
+
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { data } = useSession();
 
-  const onSubmit = (val: string) => {
+  const { setIsNewPrompt, handleInit, setLoading } = usePrompt();
+
+  const onSubmit = async (val: string) => {
     if (!val) return;
 
     if (!data?.user?.id) {
@@ -21,6 +27,14 @@ export default function Home() {
     if (!localStorage.getItem('openai-key')) {
       toast('Please Enter OpenAI API Key!');
       return;
+    }
+    setLoading(true);
+    setIsNewPrompt(true);
+    try {
+      const result = await handleInit(val);
+      router.push(`/t/${result.slug}`);
+    } catch (error) {
+      setLoading(false);
     }
   };
 
