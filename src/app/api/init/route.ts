@@ -1,9 +1,9 @@
-import { NextResponse, NextRequest } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { validateUser } from '@/app/utils';
 import { db, components } from '@/server/database/schema';
 import { init } from '@paralleldrive/cuid2';
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   const user = await validateUser();
   const slugCache = init({
     length: 12,

@@ -1,8 +1,40 @@
-import { Fragment } from 'react';
+'use client';
+
+import { useEffect } from 'react';
 import { Clock } from 'lucide-react';
 import { Tooltip, Button } from '@nextui-org/react';
+import { usePrompt } from '@/app/utils';
 
-export default function Page() {
+type IProps = {
+  params: {
+    slug: string;
+  };
+};
+
+const getComponent = async (slug: string) => {
+  const res = await fetch(`/api/componentData/${slug}`, {
+    method: 'GET',
+  });
+  return await res.json();
+};
+
+export default function Page({ params }: IProps) {
+  const { isNewPrompt, handleCreate } = usePrompt();
+
+  useEffect(() => {
+    generateComponent();
+  }, []);
+
+  const generateComponent = async () => {
+    const data = await getComponent(params.slug);
+    if (isNewPrompt && data?.length === 1) {
+      await handleCreate({
+        id: data[0].id,
+        prompt: data[0].description,
+      });
+    }
+  };
+
   return (
     <div className="pb-2 md:pb-8">
       <div className="flex flex-col md:flex-row w-full">

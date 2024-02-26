@@ -33,6 +33,25 @@ export function usePrompt() {
     return await res.json();
   }
 
+  async function handlePrompt(url: string, body: Record<string, any>) {
+    setLoading(true);
+    setContent('');
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'x-openai-key': openaiKey,
+      },
+      body: JSON.stringify(body),
+    });
+    try {
+    } catch (err) {}
+  }
+
+  async function handleCreate(body: Record<string, any>) {
+    setIsNewPrompt(false);
+    await handlePrompt('/api/create', body);
+  }
+
   return {
     loading,
     content,
@@ -41,5 +60,6 @@ export function usePrompt() {
     setLoading,
     setIsNewPrompt,
     handleInit,
+    handleCreate,
   };
 }

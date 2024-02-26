@@ -12,7 +12,7 @@ const createId = init({
 const betterSqlite = new Database(join(process.cwd(), './db.sqlite'));
 export const db = drizzle(betterSqlite);
 
-export const users = sqliteTable('users', {
+export const users = sqliteTable('user', {
   id: text('id').notNull().primaryKey(),
   name: text('name'),
   email: text('email').notNull(),
