@@ -15,6 +15,7 @@
     "@libsql/client": "^0.5.1",
     "@nextui-org/react": "^2.2.9",
     "@paralleldrive/cuid2": "^2.2.2",
+    "ai": "^2.2.36",
     "better-sqlite3": "^9.4.3",
     "drizzle-kit": "^0.20.14",
     "drizzle-orm": "^0.29.3",
@@ -29,7 +30,9 @@
     "react": "^18",
     "react-dom": "^18",
     "react-toastify": "^10.0.4",
-    "zod": "^3.22.4"
+    "ts-sse": "^0.0.6",
+    "zod": "^3.22.4",
+    "zod-to-json-schema": "^3.22.4"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.9",

@@ -27,7 +27,7 @@ export default function Page({ params }: IProps) {
 
   const generateComponent = async () => {
     const data = await getComponent(params.slug);
-    if (isNewPrompt && data?.length === 1) {
+    if (!isNewPrompt && data?.length === 1) {
       await handleCreate({
         id: data[0].id,
         prompt: data[0].description,
