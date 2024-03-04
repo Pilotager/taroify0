@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Clock } from 'lucide-react';
 import { Tooltip, Button } from '@nextui-org/react';
 import { usePrompt } from '@/app/utils';
+import { toast, ToastContainer } from 'react-toastify';
 
 type IProps = {
   params: {
@@ -19,11 +20,33 @@ const getComponent = async (slug: string) => {
 };
 
 export default function Page({ params }: IProps) {
-  const { isNewPrompt, handleCreate } = usePrompt();
+  const iframeRef = useRef(null);
+
+  const onDone = () => {
+    toast('Latest generation is completed!');
+  };
+
+  const onStream = (data: string) => {
+    return sendDataToIframe(data);
+  };
+
+  const { isNewPrompt, handleCreate } = usePrompt({ onDone, onStream });
 
   useEffect(() => {
     generateComponent();
   }, []);
+
+  function sendDataToIframe(data: string) {
+    const channel = new MessageChannel();
+    if (iframeRef.current) {
+      // console.log('iframeRef.current', iframeRef.current!.contentWindow);
+      // iframeRef.current?.contentWindow?.postMessage(
+      //   { from: 'taroify0', data },
+      //   '*',
+      //   [channel.port2],
+      // );
+    }
+  }
 
   const generateComponent = async () => {
     const data = await getComponent(params.slug);
@@ -69,9 +92,16 @@ export default function Page({ params }: IProps) {
             <div className="flex items-center gap-2"></div>
             <div className="flex items-center gap-2"></div>
           </div>
-          <div className="relative z-0 flex w-full mt-3 md:mt-4 overflow-hidden border rounded-xl h-[calc(100vh-10rem)]"></div>
+          <div className="relative z-0 flex w-full mt-3 md:mt-4 overflow-hidden border rounded-xl h-[calc(100vh-10rem)]">
+            <iframe
+              ref={iframeRef}
+              src={`/p/${params.slug}`}
+              className="w-full h-full"
+            />
+          </div>
         </div>
       </div>
+      <ToastContainer hideProgressBar theme="dark" />
     </div>
   );
 }

@@ -31,7 +31,7 @@ const designInit = async (
     {
       role: `system`,
       content:
-        `Your task is to design a new Taro component for a web app, according to the user's request.\n` +
+        `Your task is to design a new Taro component for a mini app, according to the user's request.\n` +
         `If you judge it is relevant to do so, you can specify pre-made library components to use in the task.\n` +
         `You can also specify the use of icons if you see that the user's request requires it.`,
     },

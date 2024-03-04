@@ -1,5 +1,5 @@
-import type { NextRequest, NextResponse } from 'next/server';
-import { EventNotifier, getSSEWriter } from 'ts-sse';
+import { NextRequest, NextResponse } from 'next/server';
+import { getSSEWriter } from 'ts-sse';
 import { designInit } from '@/app/utils';
 
 export async function POST(req: NextRequest, res: NextResponse) {
@@ -13,4 +13,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
   };
 
   await syncStatusStream(getSSEWriter(writer, encoder));
+
+  return new NextResponse(responseStream.readable, {
+    headers: {
+      'Content-Type': 'text/event-stream',
+      Connection: 'keep-alive',
+      'Cache-Control': 'no-cache, no-transform',
+    },
+  });
 }

@@ -5,8 +5,8 @@ import { useDisclosure } from '@nextui-org/react';
 import { toast, ToastContainer } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { usePrompt } from '@/app/utils';
-import PromptInput from './components/PromptInput';
-import GithubLoginDialog from './components/GithubLoginDialog';
+import PromptInput from '../components/PromptInput';
+import GithubLoginDialog from '../components/GithubLoginDialog';
 
 export default function Home() {
   const router = useRouter();
@@ -14,7 +14,7 @@ export default function Home() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { data } = useSession();
 
-  const { setIsNewPrompt, handleInit, setLoading } = usePrompt();
+  const { setIsNewPrompt, handleInit, setLoading } = usePrompt({});
 
   const onSubmit = async (val: string) => {
     if (!val) return;

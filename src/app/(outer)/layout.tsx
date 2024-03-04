@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google';
 import { Header } from '@/app/components';
 import { Providers } from './providers';
 
-import './style/globals.css';
+import '../style/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ['latin'] });
